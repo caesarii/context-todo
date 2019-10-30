@@ -1,67 +1,87 @@
 import React from 'react'
 import classnames from 'classnames'
+import { TodosContext } from '../../context/todosContext';
 import './index.css'
 
 function Main (props) {
-    const { todos } = props
-    if (todos.size === 0) {
-        return null
-    }
-    
     return (
-      <section className="main">
-          <ToggleBtn {...props}/>
-          <TodoList {...props}/>
-      </section>
-    )
-    
-}
-
-function ToggleBtn (props) {
-    const { todos, onToggleAllTodos } = props
-    const areAllComplete = todos.every((todo) => {
-        return todo.completed
-    })
-    return (
-      <div>
-          <input
-            type="checkbox"
-            className="toggle-all"
-            checked={areAllComplete ? 'checked' : ''}
-            onChange={onToggleAllTodos}
-          />
-          <label htmlFor="toggle-all">
-              Mark all as complete
-          </label>
-      </div>
+        <TodosContext.Consumer>
+            {
+                (todos) => {
+                    if (todos.size === 0) {
+                        return null
+                    }
+                    return (
+                        <section className="main">
+                            <ToggleBtn {...props}/>
+                            <TodoList {...props}/>
+                        </section>
+                    )
+                }
+            }
+        </TodosContext.Consumer>
     )
 }
 
-
-function TodoList (props) {
-    const {
-        todos,
-        onDeleteTodo,
-        onEditTodo,
-        onStartEditingTodo,
-        onStopEditingTodo,
-        onToggleTodo
+function ToggleBtn () {
+    const areAllComplete = (todos) => {
+        const are = todos.every((todo) => {
+            return todo.completed
+        })
+        return are ? 'checked' : ''
     }
-      = props
+    
     return (
-      <ul className="todo-list">
-          {[...todos.values()].reverse().map((todo) => {
-              return (<TodoItem
-                key={todo.id}
-                todo={todo}
-                onDeleteTodo={onDeleteTodo}
-                onEditTodo={onEditTodo}
-                onStartEditingTodo={onStartEditingTodo}
-                onStopEditingTodo={onStopEditingTodo}
-                onToggleTodo={onToggleTodo}
-              />)
-          })}
-      </ul>
+    <TodosContext.Consumer>
+        {
+            (todos, onToggleAllTodos) => {
+                return (
+                    <div>
+                        <input
+                            type="checkbox"
+                            className="toggle-all"
+                            checked={areAllComplete(todos)}
+                            onChange={onToggleAllTodos}
+                        />
+                        <label htmlFor="toggle-all">
+                            Mark all as complete
+                        </label>
+                    </div>
+                )
+            }
+        }
+    </TodosContext.Consumer>
+    )
+}
+
+
+function TodoList () {
+    return (
+        <TodosContext.Consumer>
+            {
+                (
+                    todos,
+                    onDeleteTodo,
+                    onEditTodo,
+                    onToggleTodo
+                ) => {
+                    return (
+                        <ul className="todo-list">
+                            {[...todos.values()].reverse().map((todo) => {
+                                return (<TodoItem
+                                        key={todo.id}
+                                        todo={todo}
+                                        onDeleteTodo={onDeleteTodo}
+                                        onEditTodo={onEditTodo}
+                                        onToggleTodo={onToggleTodo}
+                                    />)
+                            })}
+                        </ul>
+                    )
+                }
+            }
+        </TodosContext.Consumer>
+      
     )
 }
 
