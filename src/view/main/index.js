@@ -34,7 +34,7 @@ function ToggleBtn () {
     return (
     <TodosContext.Consumer>
         {
-            (todos, onToggleAllTodos) => {
+            ({todos, onToggleAllTodos}) => {
                 return (
                     <div>
                         <input
@@ -59,12 +59,12 @@ function TodoList () {
     return (
         <TodosContext.Consumer>
             {
-                (
+                ({
                     todos,
                     onDeleteTodo,
                     onEditTodo,
-                    onToggleTodo
-                ) => {
+                    onToggleTodo 
+                }) => {
                     return (
                         <ul className="todo-list">
                             {[...todos.values()].reverse().map((todo) => {
