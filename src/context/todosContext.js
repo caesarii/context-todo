@@ -1,5 +1,7 @@
 
 import React from 'react'
+import Counter from '../utils/Counter'
+import Todo from '../utils/Todo'
 
 const onAdd = (text, todos) => {
     if (text === '') {
@@ -26,7 +28,6 @@ const onDeleteTodo = (id, todos) => {
 }
 
 const onEditTodo = (id, text, todos) => {
-    const todos = prev.todos
     todos.forEach(t => {
         if(t.id === id) {
             t.text = text
@@ -47,7 +48,7 @@ const onToggleTodo = (id, todos) => {
 }
 
 const onToggleAllTodos = (todos) => {
-    const todos = prev.todos.map(t => {
+    todos = todos.map(t => {
         t.complete = !t.complete
         return t
     })
@@ -55,7 +56,7 @@ const onToggleAllTodos = (todos) => {
 }
 
 const onDeleteCompletedTodos = (todos) => {
-    const todos = prev.todos.filter(t => {
+    todos = todos.filter(t => {
         if(!t.complete) {
             return t
         }
