@@ -1,25 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import classnames from 'classnames'
 import { TodosContext } from '../../context/todosContext';
 import './index.css'
 
 function Main (props) {
+    const { todos } = useContext(TodosContext);
+    if (todos.size === 0) {
+        return null
+    }
+            
     return (
-        <TodosContext.Consumer>
-            {
-                (todos) => {
-                    if (todos.size === 0) {
-                        return null
-                    }
-                    return (
-                        <section className="main">
-                            <ToggleBtn {...props}/>
-                            <TodoList {...props}/>
-                        </section>
-                    )
-                }
-            }
-        </TodosContext.Consumer>
+        <section className="main">
+            <ToggleBtn {...props}/>
+            <TodoList {...props}/>
+        </section>
     )
 }
 
